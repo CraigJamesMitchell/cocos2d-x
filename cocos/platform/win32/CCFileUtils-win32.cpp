@@ -60,6 +60,7 @@ static void _checkPath()
 {
     if (0 == s_resourcePath.length())
     {
+#if 0
         WCHAR *pUtf16ExePath = nullptr;
         _get_wpgmptr(&pUtf16ExePath);
 
@@ -70,6 +71,16 @@ static void _checkPath()
         int nNum = WideCharToMultiByte(CP_UTF8, 0, pUtf16ExePath, pUtf16DirEnd-pUtf16ExePath+1, utf8ExeDir, sizeof(utf8ExeDir), nullptr, nullptr);
 
         s_resourcePath = convertPathFormatToUnixStyle(utf8ExeDir);
+#else
+		// Use current directory as default path
+		WCHAR utf16Path[CC_MAX_PATH] = { 0 };
+		GetCurrentDirectoryW(sizeof(utf16Path) - 1, utf16Path);
+
+		char utf8Path[CC_MAX_PATH] = { 0 };
+		int nNum = WideCharToMultiByte(CP_UTF8, 0, utf16Path, -1, utf8Path, sizeof(utf8Path), nullptr, nullptr);
+		s_resourcePath = convertPathFormatToUnixStyle(utf8Path);
+		s_resourcePath.append("/");
+#endif
     }
 }
 

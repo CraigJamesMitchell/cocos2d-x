@@ -159,7 +159,7 @@ class Data;
  */
 class CC_DLL Properties
 {
-    friend class Game;
+    //friend class Game;
 
 public:
 
